@@ -1,4 +1,6 @@
 <script>
+	import { storageUrl } from '../js/api';
+
 	const plHolPath = new URL('../assets/images/placeholder.jpg', import.meta.url);
 
 	export default {
@@ -7,7 +9,7 @@
 		},
 		methods: {
 			getImagePath(imgPath) {
-				if (imgPath !== null) return new URL('storage/' + imgPath, 'http://localhost:8000/').href;
+				if (imgPath !== null) return storageUrl('storage/' + imgPath);
 			},
 		},
 		props: {

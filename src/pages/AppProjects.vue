@@ -1,13 +1,14 @@
 <script>
 	import axios from 'axios';
 	import ProjectCard from '../components/ProjectCard.vue';
+	import { projectsUrl } from '../js/api';
 
 	export default {
 		name: 'AppMain',
 		data() {
 			return {
 				projectsList: [],
-				apiUrl: 'http://127.0.0.1:8000/api/projects',
+				apiUrl: projectsUrl,
 				isLoaded: false,
 				colsPerLine: 6,
 				currentHoveredDivIndex: null,

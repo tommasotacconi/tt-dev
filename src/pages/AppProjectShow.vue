@@ -1,12 +1,13 @@
 <script>
 	import axios from 'axios';
+	import { projectsUrl, storageUrl } from '../js/api';
 
 	export default {
 		name: 'AppProjectShow',
 		data() {
 			return {
 				project: [],
-				apiUrl: 'http://127.0.0.1:8000/api/projects',
+				apiUrl: projectsUrl,
 				isLoaded: false,
 			}
 		},
@@ -25,7 +26,7 @@
 					});
 			},
 			getImagePath: function (imgPath) {
-				return new URL(imgPath, 'http://localhost:8000/').href;
+				return storageUrl(imgPath);
 			},
 		},
 		created() {
