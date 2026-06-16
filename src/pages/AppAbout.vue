@@ -206,10 +206,12 @@
 </script>
 
 <template>
-	<h1>{{ $t('about.title') }}</h1>
-	<PersonalLogo />
+	<h1 v-scroll-reveal>{{ $t('about.title') }}</h1>
+	<div v-scroll-reveal="100">
+		<PersonalLogo />
+	</div>
 
-	<section>
+	<section v-scroll-reveal="160">
 		<h2 class="mt-2 py-1">{{ $t('about.skills.title') }}</h2>
 
 		<div class="section-contents d-flex">
@@ -274,7 +276,7 @@
 			</div>
 		</div>
 	</section>
-	<section>
+	<section v-scroll-reveal>
 		<h2 class="mt-2 py-1">{{ $t('about.personalPath.title') }}</h2>
 
 		<i18n-t keypath="about.personalPath.text" tag="p">
@@ -283,7 +285,7 @@
 			}}</a>.
 		</i18n-t>
 	</section>
-	<section>
+	<section v-scroll-reveal>
 		<h2 class="mt-2 py-1">{{ $t('about.contacts.title') }}</h2>
 
 		<ul>

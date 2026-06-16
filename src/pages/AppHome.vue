@@ -107,9 +107,9 @@
 </script>
 
 <template>
-	<h1 class="text-center py-5">{{ $t('home.intro.title') }}</h1>
+	<h1 v-scroll-reveal class="text-center py-5">{{ $t('home.intro.title') }}</h1>
 
-	<div class="code-wrapper">
+	<div v-scroll-reveal="120" class="code-wrapper">
 		<pre class="cod-ex-block">
 <code ref="codeBl" class="language-javascript typewriter">{{ intro }}</code>
 			</pre>

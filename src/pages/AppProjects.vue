@@ -79,10 +79,10 @@
 	</div>
 	<!-- Main -->
 	<main class="pb-4" v-else>
-		<h1 class="text-center py-5">{{ $t('projectsOverview.title') }}</h1>
+		<h1 v-scroll-reveal class="text-center py-5">{{ $t('projectsOverview.title') }}</h1>
 		<div class="card-container container-md">
 			<!-- Contatori di card -->
-			<div class="filter-counter-box row d-block p-4">
+			<div v-scroll-reveal="100" class="filter-counter-box row d-block p-4">
 				<div>{{ $t('projectsOverview.projects.completed') }}: <span class="badge rounded-pill"><span
 							class="pillow-text">{{
 								projectsList.length }}</span></span></div> <!-- counter for projects -->
@@ -92,7 +92,8 @@
 				<!-- Cols -->
 				<div class="col-2 card-col"
 					:class="{ 'collapsed': collapsedColsIndexes.includes(index) && index !== currentHoveredDivIndex, 'expanded': currentHoveredDivIndex === index }"
-					v-for="(project, index) in projectsList" :key="index">
+					v-for="(project, index) in projectsList" :key="index"
+					v-scroll-reveal="{ delay: 140 + (index % colsPerLine) * 70 }">
 					<ProjectCard :cardProject="project"
 						:state="{ show: detailsShowsList[index], hovered: index === currentHoveredDivIndex }"
 						@mouseenter="currentHoveredDivIndex = index" @mouseleave="currentHoveredDivIndex = null" />

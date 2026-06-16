@@ -56,14 +56,15 @@
 	<!-- Main -->
 	<main class="project-show" v-else>
 		<!-- Title -->
-		<h1 class="text-center py-5">{{ project.name }}</h1>
+		<h1 v-scroll-reveal class="text-center py-5">{{ project.name }}</h1>
 		<!-- Jumbotron image -->
-		<img class="img-fluid" :src="getImagePath(`storage/${project.img_url}`)" alt="">
+		<img v-scroll-reveal="100" class="img-fluid" :src="getImagePath(`storage/${project.img_url}`)" alt="">
 		<!-- Project characteristics -->
 		<div class="container-md">
 			<div class="row">
-				<div v-for="(txt, descriptor) in localeTxt"
-					:class="[descriptor === 'purpose' ? 'col-12' : ['start', 'end'].includes(descriptor) ? 'col-3' : 'col']">
+				<div v-for="(txt, descriptor, index) in localeTxt"
+					:class="[descriptor === 'purpose' ? 'col-12' : ['start', 'end'].includes(descriptor) ? 'col-3' : 'col']"
+					v-scroll-reveal="{ delay: 140 + index * 60 }">
 					<h2>{{ txt.title }}</h2>
 					<p :class="[descriptor]">{{ project[descriptor] }}</p>
 				</div>
