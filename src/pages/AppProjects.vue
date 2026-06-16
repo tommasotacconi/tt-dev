@@ -83,9 +83,9 @@
 		<div class="card-container container-md">
 			<!-- Contatori di card -->
 			<div class="filter-counter-box row d-block p-4">
-				<div>{{ $t('projectsOverview.projects.completed') }}: <span
-						class="badge rounded-pill text-bg-dark"><span class="pillow-text">{{
-							projectsList.length }}</span></span></div> <!-- counter for projects -->
+				<div>{{ $t('projectsOverview.projects.completed') }}: <span class="badge rounded-pill"><span
+							class="pillow-text">{{
+								projectsList.length }}</span></span></div> <!-- counter for projects -->
 			</div>
 			<!-- Row di cols -->
 			<div class="row g-3 mt-5">
@@ -103,6 +103,8 @@
 </template>
 
 <style lang="scss">
+	@use '../style/variables/palette' as pall;
+
 	.loader-container {
 		height: calc(100vh - 56px);
 	}
@@ -170,17 +172,8 @@
 		}
 	}
 
-	.counter-pillow {
-		padding: 3px 10px;
-		margin-left: 5px;
-		background-color: #ffae4b;
-		border-radius: 15px;
-
-		color: rgb(var(--bs-dark-rgb));
-
-		.pillow-text {
-			vertical-align: 5%;
-		}
+	.rounded-pill {
+		background-color: pall.$accent-blue;
 	}
 
 	.col-2 {

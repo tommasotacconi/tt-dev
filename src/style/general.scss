@@ -21,6 +21,11 @@ $link-color: #0000EE;
 }
 
 body {
+	color: pall.$text-main;
 	font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	background-color: pall.$bg-main;
+}
+
+h1 {
+	color: pall.$accent-blue;
 }

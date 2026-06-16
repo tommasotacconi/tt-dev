@@ -18,8 +18,8 @@
 					.then(({ data: { results: [project] } }) => {
 						// handle success
 						const { arguments: purpose,
-							start_date: start, end_date: end, technologies: tech, ...rest } = project;
-						this.project = { ...rest, type: this.getObjNameKey(rest.type), purpose, tech, start, end, tech: tech.map(t => this.getObjNameKey(t)).join(', ') };
+							start_date: start, end_date: end, technologies: stack, ...rest } = project;
+						this.project = { ...rest, type: this.getObjNameKey(rest.type), purpose, tech: stack.map(t => this.getObjNameKey(t)).join(', '), start, end };
 						this.isLoaded = true;
 					})
 					.catch(function (error) {
@@ -73,6 +73,8 @@
 </template>
 
 <style lang="scss" scoped>
+	@use '../style/variables/palette' as pall;
+
 	.loader-container {
 		height: calc(100vh - 56px);
 	}
@@ -150,7 +152,7 @@
 	.container-md {
 		h2 {
 			font-size: 1.2rem;
-			color: lightslategrey
+			color: pall.$text-soft;
 		}
 
 		p {

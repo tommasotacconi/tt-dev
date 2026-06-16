@@ -36,16 +36,16 @@
 				v-if="state.show">
 		</Transition>
 		<div class="card-body m-0 p-2">
-			<h5 class="card-title playing-card">{{ cardProject.name }}</h5>
+			<h3 class="card-title playing-card">{{ cardProject.name }}</h3>
 			<Transition>
-				<p v-if="state.show" class="authors"><span class="card-data">{{ $t('components.card.shrinked.authors')
-				}}</span class="authors-block">{{
-							cardProject.authors }}</p>
+				<p v-if="state.show" class="authors">
+				<h4 id="authors-word">{{ $t('components.card.shrinked.authors') }}</h4>
+				{{ cardProject.authors }}</p>
 			</Transition>
 		</div>
 		<Transition>
 			<div class="button-wrapper" v-if="state.hovered">
-				<a class="btn btn-primary" @click="$router.push(`/projects/${cardProject.id}`)">{{
+				<a class="btn" @click="$router.push(`/projects/${cardProject.id}`)">{{
 					$t('elements.buttons.show.text')
 				}}</a>
 			</div>
@@ -54,22 +54,36 @@
 </template>
 
 <style lang="scss" scoped>
+	@use '../style/variables/palette' as pall;
+
 	.card {
 		height: 220px;
+		border-width: 2px;
 
 		position: relative;
 		overflow-y: hidden;
 
 		transition: height 1s;
 
-		.card-data {
+		h3.card-title {
+			color: pall.$text-main;
+		}
+
+		h4#authors-word {
+			display: inline;
 			margin-right: 10px;
 			color: #5081b3;
+			font-size: 0.8em;
 		}
 	}
 
 	.col-2.expanded>.card {
 		height: 330px;
+		border-color: pall.$secondary;
+
+		h3 {
+			margin-right: 40px;
+		}
 
 		.card-body {
 			display: flex;
@@ -77,14 +91,20 @@
 		}
 	}
 
+	.button-wrapper {
+		a {
+			border-color: pall.$primary;
+			color: pall.$primary;
+			background: transparent;
+			position: absolute;
+			left: 10px;
+			bottom: 10px;
 
-	a {
-		background-color: #5082b3dd;
-		border-color: transparent;
-		color: #000;
-		position: absolute;
-		left: 10px;
-		bottom: 10px;
+			&:hover {
+				border-color: pall.$secondary;
+				background-color: pall.$secondary;
+			}
+		}
 	}
 
 	.v-enter-active,

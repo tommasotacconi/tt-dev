@@ -7,8 +7,8 @@
 		<div class="logo-frame my-3" aria-label="Tommaso Tacconi personal image">
 			<img src="../assets/images/TT-2.jpg" class="rounded-circle" alt="">
 		</div>
-		<h2>Tommaso Tacconi</h2>
-		<h3>Sviluppatore full stack</h3>
+		<h2 id="personal-name">Tommaso Tacconi</h2>
+		<h3 class="personal-job">Sviluppatore full stack</h3>
 	</div>
 </template>
 
@@ -24,8 +24,7 @@
 		padding: 30px;
 	}
 
-	$logo-glow-vars:
-		--logo-glow-alpha number,
+	$logo-glow-vars: --logo-glow-alpha number,
 		--logo-glow-blur length,
 		--logo-glow-front-x length,
 		--logo-glow-front-y length,
@@ -40,10 +39,8 @@
 		}
 	}
 
-	$logo-glow-initial:
-		.24 42px -8px -2px 8px 3px;
-	$logo-glow-frames:
-		'0%, 100%' .2 38px -5px -6px 12px 4px,
+	$logo-glow-initial: .24 42px -8px -2px 8px 3px;
+	$logo-glow-frames: '0%, 100%' .2 38px -5px -6px 12px 4px,
 		'18%' .3 54px -17px -16px 6px 12px,
 		'34%' .38 68px -22px 8px 12px -10px,
 		'51%' .24 48px -4px 15px 18px 4px,
