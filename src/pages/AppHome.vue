@@ -88,7 +88,7 @@
 							? 'home.intro.message.incompleteThought'
 							: 'home.intro.message.completeThought', { thought: this.thought.text }
 						),
-						this.$t('home.intro.message.siteInfo')
+						this.$t('home.intro.message.site')
 					].join(' '),
 					this.$t('home.intro.message.warning') + '`'
 				].join('\n\n');

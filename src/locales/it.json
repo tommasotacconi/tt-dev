@@ -5,26 +5,26 @@
         "links": {
           "siteName": "Portfolio",
           "homepage": "Introduzione",
-          "projectsPage": "Progetti",
-          "aboutPage": "Chi sono"
+          "projects": "Progetti",
+          "about": "Chi sono"
         }
       }
     },
     "footer": {},
     "card": {
       "shrinked": {
-        "authorsDetail": "Autori"
+        "authors": "Autori"
       }
     }
   },
   "elements": {
     "buttons": {
-      "showBtn": {
+      "show": {
         "text": "mostra"
       }
     },
     "selects": {
-      "langSel": {
+      "lang": {
         "selected": "Cambia lingua",
         "options": [
           "english",
@@ -108,7 +108,7 @@
         },
         "incompleteThought": "{thought}, ma qualora volessi dare un'occhiata,",
         "completeThought": "{thought} Comunque, aggiungo solo che",
-        "siteInfo": "alla pagina 'progetti' trovi i collegamenti ai siti dimostrativi più recenti che ho realizzato, mentre ad 'info' il mio percorso e i miei contatti.",
+        "site": "alla pagina 'progetti' trovi i collegamenti ai siti dimostrativi più recenti che ho realizzato, mentre ad 'info' il mio percorso e i miei contatti.",
         "warning": "Ah dimenticavo! Il sito è in test, quindi se notassi qualche funzionamento inatteso, puoi farmelo sapere alla mia mail."
       }
     },
@@ -116,28 +116,28 @@
   },
   "projectsOverview": {
     "title": "Progetti",
-    "projectsInfoBox": {
-      "completedInfo": "Progetti completati"
+    "projects": {
+      "completed": "Progetti completati"
     }
   },
   "projectShow": {
     "characteristics": {
-      "authorsInfo": {
+      "authors": {
         "title": "Autori"
       },
-      "typeInfo": {
+      "type": {
         "title": "Tipo"
       },
-      "purposeInfo": {
+      "purpose": {
         "title": "Scopo"
       },
-      "startInfo": {
+      "start": {
         "title": "Data d'inizio"
       },
-      "endInfo": {
+      "end": {
         "title": "Data di fine"
       },
-      "techInfo": {
+      "tech": {
         "title": "Tecnologie",
         "emptyWarning": "Non sono indicate tecnologie associate"
       }

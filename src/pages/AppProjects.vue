@@ -83,7 +83,7 @@
 		<div class="card-container container-md">
 			<!-- Contatori di card -->
 			<div class="filter-counter-box row d-block p-4">
-				<div>{{ $t('projectsOverview.projectsInfoBox.completedInfo') }}: <span
+				<div>{{ $t('projectsOverview.projects.completed') }}: <span
 						class="badge rounded-pill text-bg-dark"><span class="pillow-text">{{
 							projectsList.length }}</span></span></div> <!-- counter for projects -->
 			</div>

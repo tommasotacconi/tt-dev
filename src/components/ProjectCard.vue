@@ -38,7 +38,7 @@
 		<div class="card-body m-0 p-2">
 			<h5 class="card-title playing-card">{{ cardProject.name }}</h5>
 			<Transition>
-				<p v-if="state.show" class="authors"><span class="card-data">{{ $t('components.card.shrinked.authorsDetail')
+				<p v-if="state.show" class="authors"><span class="card-data">{{ $t('components.card.shrinked.authors')
 				}}</span class="authors-block">{{
 							cardProject.authors }}</p>
 			</Transition>
@@ -46,7 +46,7 @@
 		<Transition>
 			<div class="button-wrapper" v-if="state.hovered">
 				<a class="btn btn-primary" @click="$router.push(`/projects/${cardProject.id}`)">{{
-					$t('elements.buttons.showBtn.text')
+					$t('elements.buttons.show.text')
 				}}</a>
 			</div>
 		</Transition>

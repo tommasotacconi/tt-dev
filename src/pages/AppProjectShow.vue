@@ -6,18 +6,20 @@
 		name: 'AppProjectShow',
 		data() {
 			return {
-				project: [],
+				project: null,
 				apiUrl: projectsUrl,
 				isLoaded: false,
+				localeTxtKey: 'projectShow.characteristics'
 			}
 		},
 		methods: {
 			getProjectsList() {
 				axios.get(this.apiUrl + `/${this.$route.params.id}`)
-					.then(response => {
+					.then(({ data: { results: [project] } }) => {
 						// handle success
-						console.log(response.data);
-						this.project = response.data.results;
+						const { arguments: purpose,
+							start_date: start, end_date: end, technologies: tech, ...rest } = project;
+						this.project = { ...rest, type: this.getObjNameKey(rest.type), purpose, tech, start, end, tech: tech.map(t => this.getObjNameKey(t)).join(', ') };
 						this.isLoaded = true;
 					})
 					.catch(function (error) {
@@ -28,6 +30,17 @@
 			getImagePath: function (imgPath) {
 				return storageUrl(imgPath);
 			},
+			getObjNameKey(obj) {
+				return obj.name.charAt(0).toUpperCase() + obj.name.slice(1);
+			}
+		},
+		computed: {
+			localeTxt() {
+				const txt = this.$tm('projectShow.characteristics');
+				console.log(txt);
+
+				return txt;
+			}
 		},
 		created() {
 			this.getProjectsList();
@@ -43,36 +56,18 @@
 	<!-- Main -->
 	<main class="project-show" v-else>
 		<!-- Title -->
-		<h1 class="text-center py-5">{{ project[0].name }}</h1>
+		<h1 class="text-center py-5">{{ project.name }}</h1>
 		<!-- Jumbotron image -->
-		<img class="img-fluid" :src="getImagePath(`storage/${project[0].img_url}`)" alt="">
+		<img class="img-fluid" :src="getImagePath(`storage/${project.img_url}`)" alt="">
 		<!-- Project characteristics -->
 		<div class="container-md">
-			<h2>{{ $t('projectShow.characteristics.authorsInfo.title') }}</h2>
-			<p class="authors">{{ project[0].authors }}</p>
-
-			<h2>{{ $t('projectShow.characteristics.typeInfo.title') }}</h2>
-			<p class="type">{{ project[0].type.name }}</p>
-
-			<h2>{{ $t('projectShow.characteristics.purposeInfo.title') }}</h2>
-			<p class="authors">{{ project[0].arguments }}</p>
-
-			<div class="row date-info">
-				<div class="date-wrapper col-4">
-					<h2>{{ $t('projectShow.characteristics.startInfo.title') }}</h2>
-					<p>{{ project[0].start_date }}</p>
-				</div>
-				<div class="date-wrapper col-4">
-					<h2>{{ $t('projectShow.characteristics.endInfo.title') }}</h2>
-					<p>{{ project[0].end_date }}</p>
+			<div class="row">
+				<div v-for="(txt, descriptor) in localeTxt"
+					:class="[descriptor === 'purpose' ? 'col-12' : ['start', 'end'].includes(descriptor) ? 'col-3' : 'col']">
+					<h2>{{ txt.title }}</h2>
+					<p :class="[descriptor]">{{ project[descriptor] }}</p>
 				</div>
 			</div>
-
-			<h2>{{ $t('projectShow.characteristics.techInfo.title') }}</h2>
-			<p v-if="project[0].technologies">{{ $t('projectShow.characteristics.techInfo.emptyWarning') }}</p>
-			<ul v-else>
-				<li v-for="technology in project[0].technologies">{{ technology.name }}</li>
-			</ul>
 		</div>
 	</main>
 </template>

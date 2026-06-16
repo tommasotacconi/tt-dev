@@ -5,26 +5,26 @@
         "links": {
           "siteName": "Portfolio",
           "homepage": "Introduction",
-          "projectsPage": "Projects",
-          "aboutPage": "About"
+          "projects": "Projects",
+          "about": "About"
         }
       }
     },
     "footer": {},
     "card": {
       "shrinked": {
-        "authorsDetail": "Authors"
+        "authors": "Authors"
       }
     }
   },
   "elements": {
     "buttons": {
-      "showBtn": {
+      "show": {
         "text": "show"
       }
     },
     "selects": {
-      "langSel": {
+      "lang": {
         "selected": "Change language",
         "options": [
           "english",
@@ -108,7 +108,7 @@
         },
         "incompleteThought": "{thought}, but if you would like to take a look,",
         "completeThought": "{thought} Anyway, I would also like to mention that",
-        "siteInfo": "inside the 'projects' page you can find the most recent demo websites I have developed, while in the 'about' section you can learn more about my background and contacts.",
+        "site": "inside the 'projects' page you can find the most recent demo websites I have developed, while in the 'about' section you can learn more about my background and contacts.",
         "warning": "Oh, almost forgot! The website is still under testing, so if you notice any unexpected behavior feel free to let me know by email."
       }
     },
@@ -116,28 +116,28 @@
   },
   "projectsOverview": {
     "title": "Projects",
-    "projectsInfoBox": {
-      "completedInfo": "Completed projects"
+    "projects": {
+      "completed": "Completed projects"
     }
   },
   "projectShow": {
     "characteristics": {
-      "authorsInfo": {
+      "authors": {
         "title": "Authors"
       },
-      "typeInfo": {
+      "type": {
         "title": "Type"
       },
-      "purposeInfo": {
+      "purpose": {
         "title": "Purpose"
       },
-      "startInfo": {
+      "start": {
         "title": "Start date"
       },
-      "endInfo": {
+      "end": {
         "title": "End date"
       },
-      "techInfo": {
+      "tech": {
         "title": "Technologies",
         "emptyWarning": "No associated technologies specified"
       }

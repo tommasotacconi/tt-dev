@@ -40,11 +40,11 @@
 						}}</router-link>
 					</li>
 					<li class="nav-item">
-						<router-link :to="{ name: 'projects' }" class="nav-link">{{ $t('components.header.nav.links.projectsPage')
+						<router-link :to="{ name: 'projects' }" class="nav-link">{{ $t('components.header.nav.links.projects')
 						}}</router-link>
 					</li>
 					<li class="nav-item">
-						<router-link :to="{ name: 'about' }" class="nav-link">{{ $t('components.header.nav.links.aboutPage')
+						<router-link :to="{ name: 'about' }" class="nav-link">{{ $t('components.header.nav.links.about')
 						}}</router-link>
 					</li>
 				</ul>
