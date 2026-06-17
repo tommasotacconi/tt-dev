@@ -17,9 +17,8 @@
 				axios.get(this.apiUrl + `/${this.$route.params.id}`)
 					.then(({ data: { results: [project] } }) => {
 						// handle success
-						const { arguments: purpose,
-							start_date: start, end_date: end, technologies: stack, ...rest } = project;
-						this.project = { ...rest, type: this.getObjNameKey(rest.type), purpose, tech: stack.map(t => this.getObjNameKey(t)).join(', '), start, end };
+						const { start_date: start, end_date: end, technologies: stack, ...rest } = project;
+						this.project = { ...rest, type: this.getObjNameKey(rest.type), tech: stack.map(t => this.getObjNameKey(t)).join(', '), start, end };
 						this.isLoaded = true;
 					})
 					.catch(function (error) {
