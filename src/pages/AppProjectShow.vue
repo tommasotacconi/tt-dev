@@ -152,7 +152,6 @@
 	.container-md {
 		h2 {
 			font-size: 1.2rem;
-			color: pall.$text-soft;
 		}
 
 		p {

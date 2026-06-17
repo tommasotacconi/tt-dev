@@ -8,7 +8,7 @@
 			<img src="../assets/images/TT-2.jpg" class="rounded-circle" alt="">
 		</div>
 		<h2 id="personal-name">Tommaso Tacconi</h2>
-		<h3 class="personal-job">Sviluppatore full stack</h3>
+		<h3 id="personal-job">Sviluppatore full stack</h3>
 	</div>
 </template>
 
@@ -102,6 +102,14 @@
 				@include set-logo-glow($alpha, $blur, $front-x, $front-y, $back-x, $back-y);
 			}
 		}
+	}
+
+	#personal-name {
+		color: pall.$secondary;
+	}
+
+	#personal-job {
+		color: pall.$text-main;
 	}
 
 	.fa-brands {

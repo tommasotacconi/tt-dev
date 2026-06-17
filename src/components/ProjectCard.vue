@@ -61,6 +61,7 @@
 	@use '../style/variables/palette' as pall;
 
 	.card {
+		--bs-card-title-color: #{pall.$text-main};
 		height: 220px;
 		border-width: 2px;
 
@@ -69,15 +70,15 @@
 
 		transition: height 1s;
 
-		h3.card-title {
-			color: pall.$text-main;
-		}
-
 		h4#authors-word {
 			display: inline;
 			margin-right: 10px;
-			color: #5081b3;
+			color: pall.$accent-blue;
 			font-size: 0.8em;
+		}
+
+		p.authors {
+			color: pall.$text-main;
 		}
 	}
 
