@@ -11,9 +11,12 @@
 			getImagePath(imgPath) {
 				if (imgPath !== null) return storageUrl('storage/' + imgPath);
 			},
+			browseTo(url) {
+				this.$router.push({ path: url });
+			}
 		},
 		props: {
-			cardProject: {
+			proj: {
 				type: Object,
 				required: true
 			},
@@ -32,20 +35,21 @@
 	<!-- Card Bootstrap -->
 	<div class="card">
 		<Transition>
-			<img :src="getImagePath(cardProject.img_url) ?? plHolPath" class="card-img-top" :alt="cardProject.name"
-				v-if="state.show">
+			<a :href="proj.url">
+				<img :src="getImagePath(proj.img_url) ?? plHolPath" class="card-img-top" :alt="proj.name" v-if="state.show">
+			</a>
 		</Transition>
 		<div class="card-body m-0 p-2">
-			<h3 class="card-title playing-card">{{ cardProject.name }}</h3>
+			<h3 class="card-title playing-card">{{ proj.name }}</h3>
 			<Transition>
 				<p v-if="state.show" class="authors">
 				<h4 id="authors-word">{{ $t('components.card.shrinked.authors') }}</h4>
-				{{ cardProject.authors }}</p>
+				{{ proj.authors }}</p>
 			</Transition>
 		</div>
 		<Transition>
 			<div class="button-wrapper" v-if="state.hovered">
-				<a class="btn" @click="$router.push(`/projects/${cardProject.id}`)">{{
+				<a class="btn" @click="$router.push(`/projects/${proj.id}`)">{{
 					$t('elements.buttons.show.text')
 				}}</a>
 			</div>

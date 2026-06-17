@@ -17,10 +17,9 @@
 		methods: {
 			getProjectsList() {
 				axios.get(this.apiUrl)
-					.then(response => {
+					.then(({ data: { results } }) => {
 						// handle success
-						console.log(response.data);
-						this.projectsList = response.data.results;
+						this.projectsList = results;
 						this.isLoaded = true;
 					})
 					.catch(function (error) {
@@ -54,7 +53,7 @@
 						break;
 					};
 				}
-				console.log(result);
+				// console.log(result);
 				return result;
 			},
 			// Compute an object with keys names given by cards indexes and values of boolean type, used in card to decide whether or not all card details. Expanded card show all details in a starting card plus a button 'show'.  
@@ -65,7 +64,7 @@
 					if (this.collapsedColsIndexes.includes(colIndex) && colIndex !== this.currentHoveredDivIndex) result[colIndex] = false;
 					else result[colIndex] = true;
 				}
-				console.log(result);
+				// console.log(result);
 				return result;
 			},
 		},
@@ -92,10 +91,9 @@
 				<!-- Cols -->
 				<div class="col-2 card-col"
 					:class="{ 'collapsed': collapsedColsIndexes.includes(index) && index !== currentHoveredDivIndex, 'expanded': currentHoveredDivIndex === index }"
-					v-for="(project, index) in projectsList" :key="index"
+					v-for="(proj, index) in projectsList" :key="index"
 					v-scroll-reveal="{ delay: 140 + (index % colsPerLine) * 70 }">
-					<ProjectCard :cardProject="project"
-						:state="{ show: detailsShowsList[index], hovered: index === currentHoveredDivIndex }"
+					<ProjectCard :proj :state="{ show: detailsShowsList[index], hovered: index === currentHoveredDivIndex }"
 						@mouseenter="currentHoveredDivIndex = index" @mouseleave="currentHoveredDivIndex = null" />
 				</div>
 			</div>
