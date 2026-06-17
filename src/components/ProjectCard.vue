@@ -35,7 +35,7 @@
 	<!-- Card Bootstrap -->
 	<div class="card">
 		<Transition>
-			<a :href="proj.url">
+			<a :href="proj.url" target="_blank">
 				<img :src="getImagePath(proj.img_url) ?? plHolPath" class="card-img-top" :alt="proj.name" v-if="state.show">
 			</a>
 		</Transition>
