@@ -131,16 +131,16 @@
       "purpose": {
         "title": "Scopo"
       },
-      "start": {
-        "title": "Data d'inizio"
-      },
-      "end": {
-        "title": "Data di fine"
-      },
       "tech": {
-        "title": "Tecnologie",
+				"title": "Tecnologie",
         "emptyWarning": "Non sono indicate tecnologie associate"
-      }
+      },
+			"start": {
+				"title": "Data d'inizio"
+			},
+			"end": {
+				"title": "Data di fine"
+			}
     }
   },
   "about": {
