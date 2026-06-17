@@ -68,6 +68,16 @@
 					<p :class="[descriptor]">{{ project[descriptor] }}</p>
 				</div>
 			</div>
+
+			<div class="project-link-wrapper" v-scroll-reveal="{ delay: 140 + Object.keys(localeTxt).length * 60 }">
+				<a :href="project.url" target="_blank" class="btn browse-to btn-outline-secondary"
+					v-scroll-reveal="{ delay: 140 + Object.keys(localeTxt).length }">
+					Vai a {{ project.name }}
+					<div class="arrow-wrapper">
+						<div class="arrow"></div>
+					</div>
+				</a>
+			</div>
 		</div>
 	</main>
 </template>
@@ -147,6 +157,71 @@
 		object-fit: cover;
 		object-position: center;
 		margin-bottom: 100px;
+	}
+
+	.btn-outline-secondary {
+		--bs-btn-color: #{pall.$text-main};
+		--bs-btn-border-color: #{pall.$accent-blue};
+		--bs-btn-hover-border-color: #{pall.$accent-blue};
+		--bs-btn-hover-bg: transparent;
+	}
+
+	/* Credits to uiverse.io/satyamchaudharydev/modern-sheep-10 */
+	a.browse-to {
+		--primary-color: var(--bs-btn-bg);
+		--secondary-color: var(--bs-btn-color);
+		--hover-color: var(--bs-btn-hover-bg);
+		--arrow-width: 10px;
+		--arrow-stroke: 2px;
+		padding: 10px 14px;
+		box-sizing: border-box;
+		display: inline-flex;
+		column-gap: 5px;
+		transition: 0.2s background;
+		align-items: center;
+
+		.arrow-wrapper {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.arrow {
+			margin-top: 1px;
+			width: var(--arrow-width);
+			background: var(--primary-color);
+			height: var(--arrow-stroke);
+			position: relative;
+			transition: 0.2s;
+
+			&::before {
+				content: "";
+				box-sizing: border-box;
+				position: absolute;
+				border: solid var(--secondary-color);
+				border-width: 0 var(--arrow-stroke) var(--arrow-stroke) 0;
+				display: inline-block;
+				top: -3px;
+				right: 3px;
+				transition: 0.2s;
+				padding: 3px;
+				transform: rotate(-45deg);
+			}
+		}
+
+		&:hover {
+			--bs-btn-color: #{pall.$accent-blue};
+			color: var(--bs-btn-color);
+			background-color: var(--hover-color);
+
+			.arrow {
+				background: var(--secondary-color);
+
+				&::before {
+					right: 0;
+				}
+			}
+		}
 	}
 
 	.container-md {
