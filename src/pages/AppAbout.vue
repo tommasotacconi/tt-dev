@@ -4,22 +4,19 @@
 	import SkillText from '../components/SkillText.vue';
 	import skillsMap from '../js/skillsMap.js';
 
-	const plhol = '<service>'
-	const mesService = `http://${plhol}.me`;
+	const createContact = (hrefBase, address) => ({
+		hrefBase,
+		address,
+		get href() {
+			return this.hrefBase + this.address;
+		}
+	});
 	const contacts = {
-		'envelope-at': {
-			hrefBase: 'mailto:',
-			address: 'tommaso.tacconi@gmail.com'
-		},
-		whatsapp: {
-			hrefBase: mesService.replace(plhol, 'wa'),
-			address: '331 5378794'
-		},
-		telegram: {
-			hrefBase: mesService.replace(plhol, 't'),
-			address: 'Tom_T218'
-		},
-	}
+		github: createContact('https://github.com/', 'tommasotacconi'),
+		linkedin: createContact('https://www.linkedin.com/in/', 'tommaso-tacconi-38b655211'),
+		'envelope-at': createContact('mailto:', 'tommaso.tacconi@gmail.com'),
+		telegram: createContact('https://t.me/', 'Tom_T218')
+	};
 	const connectorContexts = ['frontend', 'backend'];
 	const cableRemeasureDelays = [180, 520];
 	const point = (origin, x = 0, y = 0) => ({
@@ -300,31 +297,40 @@
 </template>
 
 <style lang="scss">
-	@use '../style/general.scss' as gen;
 	@use '../style/variables/dimensions' as *;
 	@use '../style/variables/palette' as pall;
 	@use '../style/variables/transformation' as tran;
+	@use 'sass:color';
 
 	section {
 		margin: 1rem 0;
 	}
 
-	h1 {
-		text-align: center;
-		color: lightsteelblue
-	}
+	a[href] {
+		--bs-link-color: #{pall.$text-main};
+		color: var(--bs-link-color);
+		text-decoration: none;
 
+		&:hover {
+			--bs-link-color: var(--bs-link-hover-color);
+			--bs-link-hover-color: #{pall.$accent-blue};
+
+		}
+	}
 
 	li {
 		list-style-type: none;
 
 		a {
 			text-decoration: none;
-			color: #000;
+			color: pall.$text-main;
 
-			@each $icon-name, $color in (envelope-at gen.$link-color,
-				whatsapp gen.$wa-color,
-				telegram gen.$teleg-color) {
+			@each $icon-name, $color in (envelope-at pall.$link-color,
+				github pall.$gh-color,
+				linkedin pall.$lkdin-color,
+				whatsapp pall.$wa-color,
+				telegram pall.$teleg-color,
+			) {
 				&:hover:has(.bi-#{$icon-name}) .bi {
 					color: $color;
 				}
