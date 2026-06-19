@@ -25,7 +25,7 @@
 			cvPath() {
 				const eventualLangSuf = this.$i18n.locale === 'it' ? '' : '_EN';
 
-				return `../../public/cv/cv_Tommaso_Tacconi${eventualLangSuf}.pdf`
+				return `/cv/cv_Tommaso_Tacconi${eventualLangSuf}.pdf`
 			}
 		},
 		components: {
