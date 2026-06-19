@@ -21,10 +21,17 @@
 				contacts
 			};
 		},
+		computed: {
+			cvPath() {
+				const eventualLangSuf = this.$i18n.locale === 'it' ? '' : '_EN';
+
+				return `../../public/cv/cv_Tommaso_Tacconi${eventualLangSuf}.pdf`
+			}
+		},
 		components: {
 			AboutSkills,
 			PersonalLogo
-		}
+		},
 	}
 </script>
 
@@ -40,7 +47,7 @@
 		<h2 class="mt-2 py-1">{{ $t('about.personalPath.title') }}</h2>
 
 		<i18n-t keypath="about.personalPath.text" tag="p">
-			<a href="../../public/cv/cv_Tommaso_Tacconi.pdf" target="_blank">{{
+			<a :href="cvPath" target="_blank">{{
 				$t('about.personalPath.linkWord')
 			}}</a>.
 		</i18n-t>
