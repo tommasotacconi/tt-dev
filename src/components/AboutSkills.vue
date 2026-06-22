@@ -225,9 +225,9 @@
 						<circle class="stack-cable__emitter stack-cable__emitter--response" :cx="cablePoints.backend.x"
 							:cy="cablePoints.backend.y" r="4" />
 					</svg>
-					<div :class="['skill-context', ctx]" v-for="(stackOrSubctx, ctx) in getPhPerSection(msgSkillsSections)"
-						:key="ctx">
-						<h3 :class="{ hovered: expandedContext === ctx }">
+					<div :class="['skill-context', ctx, { expanded: expandedContext === ctx }]"
+						v-for="(stackOrSubctx, ctx) in getPhPerSection(msgSkillsSections)" :key="ctx">
+						<h3>
 							<i :class="['fa-solid', 'fa-' + getFaIcon(ctx)]"></i>
 							<span v-if="connectorContexts.includes(ctx)" :ref="el => setConnectorRef(ctx, el)"
 								class="skill-context__connector" aria-hidden="true">
@@ -439,177 +439,202 @@
 			'100%': (.024 2, -.976, 0))
 	);
 
-	@mixin cable-signal-state($dash-array, $dash-offset, $opacity) {
-		stroke-dasharray: $dash-array;
-		stroke-dashoffset: $dash-offset;
-		opacity: $opacity;
-	}
+@mixin cable-signal-state($dash-array, $dash-offset, $opacity) {
+	stroke-dasharray: $dash-array;
+	stroke-dashoffset: $dash-offset;
+	opacity: $opacity;
+}
 
-	@each $name, $frames in $cable-signal-frames {
-		@keyframes stack-cable-#{$name} {
-			@each $step, $state in $frames {
-				#{$step} {
-					@include cable-signal-state($state...);
-				}
+@each $name, $frames in $cable-signal-frames {
+	@keyframes stack-cable-#{$name} {
+		@each $step, $state in $frames {
+			#{$step} {
+				@include cable-signal-state($state...);
 			}
 		}
 	}
+}
 
-	@keyframes stack-cable-request-emitter {
+@keyframes stack-cable-request-emitter {
 
-		0%,
-		4%,
-		13%,
-		100% {
-			opacity: 0;
-			transform: scale(.6);
-		}
-
-		7% {
-			opacity: 1;
-			transform: scale(1);
-		}
-
-		11% {
-			opacity: 0;
-			transform: scale(4.2);
-		}
+	0%,
+	4%,
+	13%,
+	100% {
+		opacity: 0;
+		transform: scale(.6);
 	}
 
-	@keyframes stack-cable-response-emitter {
-
-		0%,
-		54%,
-		63%,
-		100% {
-			opacity: 0;
-			transform: scale(.6);
-		}
-
-		57% {
-			opacity: 1;
-			transform: scale(1);
-		}
-
-		61% {
-			opacity: 0;
-			transform: scale(4.2);
-		}
+	7% {
+		opacity: 1;
+		transform: scale(1);
 	}
 
-	.skill-context,
-	.skill-subcontext {
-		perspective: 3500px;
-		transform-style: preserve-3d;
+	11% {
+		opacity: 0;
+		transform: scale(4.2);
+	}
+}
+
+@keyframes stack-cable-response-emitter {
+
+	0%,
+	54%,
+	63%,
+	100% {
+		opacity: 0;
+		transform: scale(.6);
 	}
 
-	.skill-context {
-		z-index: 1;
-		padding: 0 $px;
-		margin: 0 auto;
+	57% {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	61% {
+		opacity: 0;
+		transform: scale(4.2);
+	}
+}
+
+.skill-context,
+.skill-subcontext {
+	perspective: 3500px;
+	transform-style: preserve-3d;
+}
+
+$skill-contexts: (
+	(frontend, $card-lg, pall.$frontend, pall.$frontend),
+	(backend, $card-xxl, pall.$backend, pall.$backend)
+);
+$skill-subcontexts: application app left, data data right;
+
+@mixin highlight-stack($ctx) {
+	.skill-card i {
+		@extend %#{$ctx}-ctx;
+	}
+
+	@each $subctx, $alias, $from in $skill-subcontexts {
+		.skill-subcontext.#{$subctx} i {
+			@extend %#{$alias}-subctx;
+		}
+	}
+}
+
+.skill-context {
+	z-index: 1;
+	padding: 0 $px;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+
+	position: relative;
+	column-gap: 10px;
+
+	h3 {
+		--shadow-width: 2px;
+		--shadow-color: #{pall.$border-soft};
+		--connector-color: #{pall.$border-hover};
+
+		padding: {
+			left: 10px;
+			bottom: 5px;
+		}
+
+		aspect-ratio: 5 / 4;
+		border-radius: $br;
 		display: flex;
-		align-items: center;
+		align-items: end;
 
 		position: relative;
-		column-gap: 10px;
+		font-size: 1.2rem;
+		vertical-align: bottom;
 
-		h3 {
-			--shadow-width: 2px;
-			--shadow-color: #{pall.$border-soft};
-			--connector-color: #{pall.$border-hover};
+		transition: box-shadow 0.5s;
+		box-shadow: 0 0 0 var(--shadow-width) var(--shadow-color);
+	}
 
-			padding: {
-				left: 10px;
-				bottom: 5px;
-			}
-
-			aspect-ratio: 5 / 4;
-			border-radius: $br;
-			display: flex;
-			align-items: end;
-
-			position: relative;
-			font-size: 1.2rem;
-			vertical-align: bottom;
-
-			transition: box-shadow 0.5s;
-			box-shadow: 0 0 0 var(--shadow-width) var(--shadow-color);
-		}
-
-		.skill-context__connector {
-			position: relative;
-			display: inline-flex;
-			flex: 0 0 auto;
-			margin-left: 8px;
-			width: 16px;
-			height: 16px;
-			border-radius: 50%;
-			background: color-mix(in srgb, var(--connector-color) 20%, transparent);
-			filter: drop-shadow(0 0 5px color-mix(in srgb, var(--connector-color) 34%, transparent));
-		}
-
-		.skill-context__connector-ring,
-		.skill-context__connector-core {
-			position: absolute;
-			inset: 50% auto auto 50%;
-			border-radius: 50%;
-			transform: translate(-50%, -50%);
-		}
-
-		.skill-context__connector-ring {
-			width: 11px;
-			height: 11px;
-			background: pall.$bg-main;
-			border: 1.6px solid var(--connector-color);
-		}
-
-		.skill-context__connector-core {
-			width: 4.4px;
-			height: 4.4px;
-			background: var(--connector-color);
-		}
-
-		$skill-contexts: (
-			(frontend, $card-lg, pall.$frontend, pall.$frontend),
-			(backend, $card-xxl, pall.$backend, pall.$backend)
-		);
-
-		@each $ctx, $width, $color, $shadow-color in $skill-contexts {
-			&.#{$ctx}>h3 {
+	@each $ctx, $width, $color, $shadow-color in $skill-contexts {
+		&.#{$ctx} {
+			&>h3 {
 				width: $width;
 				--connector-color: #{$color};
 				@extend %#{$ctx}-ctx;
+			}
 
-				&:hover,
-				&.hovered {
-					--shadow-width: 6px;
-					--shadow-color: #{$shadow-color};
+			&>h3:hover,
+			&.expanded>h3 {
+				--shadow-width: 6px;
+				--shadow-color: #{$shadow-color};
+			}
+
+			&>h3:hover {
+				&~ {
+					@include highlight-stack($ctx)
+				}
+			}
+
+			&.expanded {
+				@include highlight-stack($ctx)
+			}
+		}
+	}
+
+	.skill-subcontext {
+		$x-of: 3%;
+		width: calc(50% - ($x-of * 2 + $px));
+
+		position: absolute;
+
+		@each $subctx, $alias, $from in $skill-subcontexts {
+			&.#{$subctx} {
+				#{$from}: calc($px + $x-of);
+
+				h3 {
+					@extend %#{$alias}-subctx;
 				}
 			}
 		}
 
-		.skill-subcontext {
-			$x-of: 3%;
-			width: calc(50% - ($x-of * 2 + $px));
-
-			position: absolute;
-
-			&.application {
-				@extend %app-subctx;
-				left: calc($px + $x-of);
-			}
-
-			&.data {
-				@extend %data-subctx;
-				right: calc($px + $x-of);
-			}
-
-			& h3 {
-				width: 100%;
-				height: 100%;
-				border: 2px solid pall.$border-soft;
-				border-radius: $br;
-			}
+		& h3 {
+			width: 100%;
+			height: 100%;
+			border: 2px solid pall.$border-soft;
+			border-radius: $br;
 		}
 	}
+
+	.skill-context__connector {
+		position: relative;
+		display: inline-flex;
+		flex: 0 0 auto;
+		margin-left: 8px;
+		width: 16px;
+		height: 16px;
+		border-radius: 50%;
+		background: color-mix(in srgb, var(--connector-color) 20%, transparent);
+		filter: drop-shadow(0 0 5px color-mix(in srgb, var(--connector-color) 34%, transparent));
+	}
+
+	.skill-context__connector-ring,
+	.skill-context__connector-core {
+		position: absolute;
+		inset: 50% auto auto 50%;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	.skill-context__connector-ring {
+		width: 11px;
+		height: 11px;
+		background: pall.$bg-main;
+		border: 1.6px solid var(--connector-color);
+	}
+
+	.skill-context__connector-core {
+		width: 4.4px;
+		height: 4.4px;
+		background: var(--connector-color);
+	}
+}
 </style>
