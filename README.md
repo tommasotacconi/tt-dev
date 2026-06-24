@@ -6,8 +6,6 @@ Personal portfolio built with Vue 3 and Vite. The site presents my projects, tec
 
 [View portfolio](http://tt-dev.tacconiweb.com)
 
-Replace the URL above with the final deployment link.
-
 ## Tech Stack
 
 <p>
