@@ -72,7 +72,7 @@
 			<div class="project-link-wrapper" v-scroll-reveal="{ delay: 140 + Object.keys(localeTxt).length * 60 }">
 				<a :href="project.url" target="_blank" class="btn browse-to btn-outline-secondary"
 					v-scroll-reveal="{ delay: 140 + Object.keys(localeTxt).length }">
-					Vai a {{ project.name }}
+					{{ $i18n.t('elements.buttons.goTo.text') }} {{ project.name }}
 					<div class="arrow-wrapper">
 						<div class="arrow"></div>
 					</div>

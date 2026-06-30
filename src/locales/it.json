@@ -21,7 +21,10 @@
     "buttons": {
       "show": {
         "text": "mostra"
-      }
+      },
+			"goTo": {
+				"text": "naviga a"
+			}
     },
     "selects": {
       "lang": {

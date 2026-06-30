@@ -21,7 +21,11 @@
     "buttons": {
       "show": {
         "text": "show"
-      }
+      },
+			"goTo": {
+				"text": "browse to"
+			}
+
     },
     "selects": {
       "lang": {
