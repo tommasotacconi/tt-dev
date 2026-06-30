@@ -2,6 +2,7 @@
 	import AppStack from './AppStack.vue';
 	import SkillText from './SkillText.vue';
 	import skillsMap from '../js/skillsMap.js';
+	import { getRotationMatrix, backendLocalToFrontendLocal } from '../js/transfMatrix.js';
 
 	const connectorContexts = ['frontend', 'backend'];
 	const cableRemeasureDelays = [180, 520];
@@ -34,7 +35,7 @@
 					backend: { x: 250, y: 126 }
 				},
 				resizeObserver: null,
-				skillsMap
+				skillsMap,
 			};
 		},
 		methods: {
@@ -77,34 +78,30 @@
 				if (el) this.connectorRefs[ctx] = el;
 			},
 			updateCableGeometry() {
-				const area = this.$refs.stackArea;
+				const area = this.$refs.stacksArea;
+				const rotatedParent = area; // the element with rotate3d + preserve-3d + perspective
 				const frontend = this.connectorRefs.frontend;
 				const backend = this.connectorRefs.backend;
+				if (!area || !rotatedParent || !frontend || !backend) return;
 
-				if (!area || !frontend || !backend) return;
+				const width = area.clientWidth, height = area.clientHeight;
+				this.cableBox = { width, height };
 
-				this.cableBox = {
-					width: area.clientWidth,
-					height: area.clientHeight
-				};
+				const R = getRotationMatrix(rotatedParent);
+				const perspectiveDepth = parseFloat(getComputedStyle(rotatedParent).perspective) || Infinity;
 
-				const getConnectorCenter = (el) => {
-					let x = el.offsetLeft + el.offsetWidth / 2;
-					let y = el.offsetTop + el.offsetHeight / 2;
-					let offsetParent = el.offsetParent;
-
-					while (offsetParent && offsetParent !== area) {
-						x += offsetParent.offsetLeft;
-						y += offsetParent.offsetTop;
-						offsetParent = offsetParent.offsetParent;
-					}
-
+				const localOffset = (el) => {
+					let x = el.offsetLeft + el.offsetWidth / 2, y = el.offsetTop + el.offsetHeight / 2, p = el.offsetParent;
+					while (p && p !== area) { x += p.offsetLeft; y += p.offsetTop; p = p.offsetParent; }
 					return { x, y };
 				};
 
+				const fe = localOffset(frontend); // already lies on the reference plane — usable directly
+				const be = localOffset(backend);  // flat layout position within backend's own (z = -150) plane
+
 				this.cablePoints = {
-					frontend: getConnectorCenter(frontend),
-					backend: getConnectorCenter(backend)
+					frontend: fe,
+					backend: backendLocalToFrontendLocal({ xb: be.x, yb: be.y, zOffset: -150, width, height, perspectiveDepth, R })
 				};
 			},
 		},
@@ -114,7 +111,7 @@
 
 				if ('ResizeObserver' in window) {
 					this.resizeObserver = new ResizeObserver(this.updateCableGeometry);
-					this.resizeObserver.observe(this.$refs.stackArea);
+					this.resizeObserver.observe(this.$refs.stacksArea);
 				}
 
 				window.addEventListener('resize', this.updateCableGeometry);
@@ -126,7 +123,7 @@
 		},
 		components: {
 			AppStack,
-			SkillText
+			SkillText,
 		},
 		computed: {
 			msgSkillsSections() {
@@ -144,41 +141,14 @@
 			},
 			cablePath() {
 				const { frontend, backend } = this.cablePoints;
-				const dx = backend.x - frontend.x;
-				const dy = backend.y - frontend.y;
-				const loopCenter = point(frontend, dx * 0.58, dy * 0.48);
-				const coilStart = point(loopCenter, -54, 1);
-				const coilEnd = point(loopCenter, 54);
-				const startEscape = point(frontend, Math.max(dx * 0.06, 10), 46);
-				const endEscape = point(backend, -Math.max(dx * 0.06, 10), -28);
-				const firstControl = point(frontend, 1, 16);
-				const startEscapeControl = point(frontend, 3, 34);
-				const coilStartControl = point(coilStart, -26, 13);
-				const loopPoints = [
-					[point(loopCenter, 6, -2), point(loopCenter, 6, -34)],
-					[point(loopCenter, -18, 3), point(loopCenter, -28, 33)],
-					[point(loopCenter, 30, -3), point(loopCenter, 36, -36)],
-					[point(loopCenter, 12, 2), point(loopCenter, 4, 34)]
-				];
-				const coilEndControl = point(loopCenter, 42, -18);
-				const endEscapeControl = point(endEscape, -22, -12);
-				const loopCurves = loopPoints.map(([target, control], index) => {
-					const previous = index === 0 ? coilStart : loopPoints[index - 1][0];
-					const previousControl = index === 0 ? coilStartControl : loopPoints[index - 1][1];
-
-					return cubic(reflect(previous, previousControl), control, target);
-				});
 
 				return [
 					`M ${svgPoint(frontend)}`,
-					cubic(firstControl, startEscapeControl, startEscape),
-					cubic(reflect(startEscape, startEscapeControl), coilStartControl, coilStart),
-					...loopCurves,
-					cubic(reflect(loopPoints.at(-1)[0], loopPoints.at(-1)[1]), coilEndControl, coilEnd),
-					cubic(reflect(coilEnd, coilEndControl), endEscapeControl, endEscape),
-					cubic(reflect(endEscape, endEscapeControl), point(backend, -1, -10), backend)
+					`L ${svgPoint(point(frontend, 0, 15))}`,
+					`${cubic(point(frontend, 0, 10), point(frontend, 0, 35), point(frontend, -10, 60))}`,
+					`${cubic(point(frontend, -80, 235), point(backend, 0, 100), point(backend))}`,
 				].join(' ');
-			}
+			},
 		}
 	}
 </script>
@@ -207,7 +177,7 @@
 			</div>
 
 			<div class="section-illustration">
-				<div ref="stackArea" class="stack-plane d-md-flex flex-wrap">
+				<div ref="stacksArea" class="stacks-area">
 					<svg ref="stackCable" class="stack-cable" :viewBox="`0 0 ${cableBox.width} ${cableBox.height}`"
 						aria-hidden="true">
 						<defs>
@@ -217,14 +187,15 @@
 								<stop offset="100%" stop-color="#693ff0" />
 							</linearGradient>
 						</defs>
-						<path class="stack-cable__track" pathLength="1" :d="cablePath" />
-						<path class="stack-cable__pulse stack-cable__pulse--request" pathLength="1" :d="cablePath" />
-						<path class="stack-cable__pulse stack-cable__pulse--response" pathLength="1" :d="cablePath" />
 						<circle class="stack-cable__emitter stack-cable__emitter--request" :cx="cablePoints.frontend.x"
 							:cy="cablePoints.frontend.y" r="4" />
 						<circle class="stack-cable__emitter stack-cable__emitter--response" :cx="cablePoints.backend.x"
 							:cy="cablePoints.backend.y" r="4" />
+						<path class="stack-cable__track" pathLength="1" :d="cablePath" />
+						<path class="stack-cable__pulse stack-cable__pulse--request" pathLength="1" :d="cablePath" />
+						<path class="stack-cable__pulse stack-cable__pulse--response" pathLength="1" :d="cablePath" />
 					</svg>
+
 					<div :class="['skill-context', ctx, { expanded: expandedContext === ctx }]"
 						v-for="(stackOrSubctx, ctx) in getPhPerSection(msgSkillsSections)" :key="ctx">
 						<h3>
@@ -256,10 +227,7 @@
 	@use '../style/variables/dimensions' as *;
 	@use '../style/variables/palette' as pall;
 	@use '../style/variables/transformation' as tran;
-
-	.section-contents {
-		min-height: inherit;
-	}
+	$planes-dist: 150px;
 
 	%frontend-ctx {
 		color: pall.$frontend;
@@ -277,9 +245,18 @@
 		color: pall.$data;
 	}
 
+	%threed-setup {
+		transform-style: preserve-3d;
+	}
+
+	.section-contents {
+		min-height: inherit;
+	}
+
+
 	.section-text {
 		width: auto;
-		flex: 1 1 50%;
+		flex: 0 60%;
 
 		.frontend-section h3 {
 			@extend %frontend-ctx;
@@ -329,34 +306,32 @@
 	}
 
 	.section-illustration {
+		padding: 0 30px;
 		position: relative;
-		flex: 0 0 50%;
-		perspective: 3500px;
-		transform-style: preserve-3d;
+		flex: 1;
+		@extend %threed-setup;
 	}
 
-	.stack-plane {
+	.stacks-area {
+		$height: 220px;
 		position: relative;
 		width: 100%;
-		min-height: 220px;
+		min-height: $height;
 		rotate: tran.$rot-3d;
-		transform-origin: center;
-		transform-style: preserve-3d;
+		@extend %threed-setup;
+		perspective: 3000px;
 	}
 
 	.stack-cable {
 		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		min-height: 220px;
 
 		overflow: visible;
 		pointer-events: none;
-		z-index: 0;
+		z-index: 1;
 
+		will-change: transform;
 		transform-origin: center;
-		transform-style: preserve-3d;
+		@extend %threed-setup;
 	}
 
 	.stack-cable__track,
@@ -499,8 +474,7 @@
 
 .skill-context,
 .skill-subcontext {
-	perspective: 3500px;
-	transform-style: preserve-3d;
+	@extend %threed-setup;
 }
 
 $skill-contexts: (
@@ -522,14 +496,23 @@ $skill-subcontexts: application app left, data data right;
 }
 
 .skill-context {
-	z-index: 1;
+	width: fit-content;
 	padding: 0 $px;
-	margin: 0 auto;
 	display: flex;
 	align-items: center;
 
-	position: relative;
+	position: absolute;
 	column-gap: 10px;
+
+	&.frontend {
+		top: -80px;
+		left: 75px;
+	}
+
+	&.backend {
+		transform: translateZ(-$planes-dist);
+		transform-style: preserve-3d;
+	}
 
 	h3 {
 		--shadow-width: 2px;
